@@ -114,9 +114,6 @@ void clearOld(struct Scene *ps)
             }
         }
     }
-    // It should be count > 3.
-    // But that gives a wrong result.
-    // This must be a bug whose reason I can't find.
     if (count > 4)
     {
         ps->scene[target.r][target.c].type = empty;
