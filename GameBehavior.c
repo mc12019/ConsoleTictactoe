@@ -1,15 +1,10 @@
-#include "Scene.h"
+#include "GameBehavior.h"
 #include "Type.h"
+#include "Function.h"
 
 int turn = 0;
 
-// private methods and structs
-struct Index
-{
-    int r;
-    int c;
-    int index;
-};
+// private methods
 int checkInbound(int r, int c)
 {
     if (r < 0 || c < 0)
@@ -23,7 +18,12 @@ int getCount(struct Scene *ps, int begin, int end, int direction, int fixed, int
     int count = 0;
     for (int p = begin; p != end; p += direction)
     {
-        if (same)
+        if (same == 2)
+        {
+            count += ps->scene[p][2 - p].type * ps->scene[p][2 - p].type;
+            continue;
+        }
+        if (same == 1)
         {
             count += ps->scene[p][p].type * ps->scene[p][p].type;
             continue;
@@ -45,7 +45,7 @@ int getSide(int count)
 }
 int isWin(int count)
 {
-    if (getSide(count) > 0)
+    if (count == 3 || count == 12)
         return 1;
     return 0;
 }
@@ -67,6 +67,8 @@ void setCell(struct Scene *ps, int r, int c)
 {
     if (checkInbound(r, c))
     {
+        if (ps->scene[r][c].type != 0)
+            return;
         ps->scene[r][c].type = turn + 1;
         ps->scene[r][c].index = ps->index++;
         turn = turn ? 0 : 1;
@@ -89,7 +91,7 @@ int checkWin(struct Scene *ps)
     int count = getCount(ps, 0, 3, 1, 0, 0, 1);
     if (isWin(count))
         return getSide(count);
-    count = getCount(ps, 2, -1, -1, 0, 0, 1);
+    count = getCount(ps, 0, 3, 1, 0, 0, 2);
     return getSide(count);
 }
 void clearOld(struct Scene *ps)
@@ -106,7 +108,6 @@ void clearOld(struct Scene *ps)
                 ++count;
                 if (ps->scene[r][c].index < target.index)
                 {
-                    ++count;
                     target.index = ps->scene[r][c].index;
                     target.r = r;
                     target.c = c;
@@ -114,7 +115,7 @@ void clearOld(struct Scene *ps)
             }
         }
     }
-    if (count > 4)
+    if (count > 3)
     {
         ps->scene[target.r][target.c].type = empty;
         ps->scene[target.r][target.c].index = 0;
