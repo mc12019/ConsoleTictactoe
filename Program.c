@@ -6,8 +6,9 @@
 #include "gamelogic/GameBehavior.h"
 #include "gamelogic/InputProcess.h"
 #include "gamelogic/Scene.h"
+#include "debugmode/DebugMode.h"
 
-int AI, first, debug;
+int AI, first;
 
 int printWin(int side) {
     if (side == (first ? 1 : 2)) {
@@ -29,10 +30,6 @@ int main(void) {
         while (1) {
             printf("If enabling AI mode? Yes - 1, No - 0: ");
             scanf("%d", &AI);
-            if (AI == 123) {
-                debug = 1;
-                break;
-            }
             if (AI != 0 && AI != 1) {
                 printf("Wrong input, try again. ");
                 continue;
@@ -62,7 +59,10 @@ int main(void) {
             while (1) {
                 printf(
                     "Input your target (row, column): ");
-                scanf("%d%d", &r, &c);
+                scanf("%d", &r);
+                if (r == -1)
+                    createThread(scene);
+                scanf("%d", &c);
                 if (!checkInbound(r - 1, c - 1) ||
                     scene->scene[r - 1][c - 1].type != 0) {
                     printf("Wrong input, try again. ");

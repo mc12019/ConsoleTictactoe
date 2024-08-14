@@ -6,7 +6,7 @@
 #include "gamelogic/GameBehavior.h"
 #include "gamelogic/Scene.h"
 
-#define ENEMY 14
+#define ENEMY 19
 #define SELF 5
 #define EMPTY 1
 
