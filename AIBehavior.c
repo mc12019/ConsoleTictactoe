@@ -20,12 +20,12 @@ int aiSide;
 // The algorithm now isn't perfect though it can deal with many situations
 
 struct Scene *clearEarliestCheck(struct Scene *ps) {
-    struct Scene *tmp = (struct Scene *)malloc(sizeof(struct Scene *));
+    struct Scene *tmp = (struct Scene *)malloc(sizeof(struct Scene));
     tmp->index = ps->index;
     for (int r = 0; r < 3; ++r) {
-        for (int c = 0; c < 3; ++c) tmp->scene[r][c] = ps->scene[r][c];
+        for (int c = 0; c < 3; ++c) tmp->board[r][c] = ps->board[r][c];
     }
-    clearOld(tmp, 2);
+    removeOldPawn(tmp, 2);
     return tmp;
 }
 
@@ -40,17 +40,17 @@ int scan(struct Scene *ps, int begin, int end, int direction, int fixed,
     int score = 0;
     for (int p = begin; p != end; p += direction) {
         if (fixedArg == 3) {
-            score += getCellScore(ps->scene[p][2 - p].type);
+            score += getCellScore(ps->board[p][2 - p].type);
             continue;
         }
         if (fixedArg == 2) {
-            score += getCellScore(ps->scene[p][p].type);
+            score += getCellScore(ps->board[p][p].type);
             continue;
         }
         if (!fixedArg)
-            score += getCellScore(ps->scene[fixed][p].type);
+            score += getCellScore(ps->board[fixed][p].type);
         else
-            score += getCellScore(ps->scene[p][fixed].type);
+            score += getCellScore(ps->board[p][fixed].type);
     }
     if (score == 2 * SELF + EMPTY) score *= 20;
     if (score == 2 * ENEMY + EMPTY) score *= 10;
@@ -74,10 +74,10 @@ void aiProcess(struct Scene *ps) {
     highestCell.index = 0;
     for (int r = 0; r < 3; ++r) {
         for (int c = 0; c < 3; ++c) {
-            if (tmpScene->scene[r][c].type == 0) {
+            if (tmpScene->board[r][c].type == 0) {
                 int score = getScore(ps, r, c);
                 if (score >= highestCell.index) {
-                    if (ps->scene[r][c].type != 0) continue;
+                    if (ps->board[r][c].type != 0) continue;
                     if (score == highestCell.index) {
                         // Make 5% chance to change the cell when same
                         if (rand() % 20 != 11) continue;
@@ -90,5 +90,5 @@ void aiProcess(struct Scene *ps) {
         }
     }
     free(tmpScene);
-    setCell(ps, highestCell.r, highestCell.c);
+    setPawn(ps, highestCell.r, highestCell.c);
 }

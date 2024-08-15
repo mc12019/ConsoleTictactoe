@@ -7,7 +7,7 @@
 char getChar(int type) {
     switch (type) {
         case empty:
-            return '_';
+            return ' ';
         case circle:
             return 'O';
         case cross:
@@ -19,10 +19,11 @@ char getChar(int type) {
 
 void show(struct Scene *ps) {
     if (system("clear"))
-        printf("err: unable to clear");
+        printf("Error: unable to clear");
+    printf("-------------------\n");
     for (int r = 0; r < 3; ++r) {
         for (int c = 0; c < 3; ++c)
-            printf("%c\t", getChar(ps->scene[r][c].type));
-        printf("\n\n");
+            printf("|%c|\t", getChar(ps->board[r][c].type));
+        printf("\n-------------------\n");
     }
 }
