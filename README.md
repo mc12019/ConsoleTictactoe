@@ -1,5 +1,7 @@
 # ConsoleTictactoe
 A C project realizes the small game Tic-tac-toe with a new feature.
+# Current Status
+Now I'm focusing on adding the debug mode. To achieve it I'm writing some libs.
 # Releases
 ## 1.0.0
 The basic game, with a feature that the earliest pawn disappearing after three pawns.
