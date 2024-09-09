@@ -1,8 +1,7 @@
 /*
  WIP still, 8.28
  Maybe this will be done in the winter vacation.
- "Damn I'd go back to school,"
- "Oh my github and those accounts will be inactive!"
+ Obseleted because I wanna change to C++
 */
 #ifndef H_COMMANDMAPPING
 #define H_COMMANDMAPPING
